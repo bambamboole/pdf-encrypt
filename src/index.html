@@ -88,26 +88,12 @@
     .results { margin-top: 1rem; font-size: 0.85rem; }
     .results .ok { color: #4ecca3; }
     .results .err { color: #e94560; }
-    .warning {
-      background: #533;
-      padding: 0.75rem;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-      font-size: 0.85rem;
-      color: #faa;
-    }
-    .warning a { color: #e94560; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🔒 PDF Encrypt</h1>
     <p class="subtitle">Password-protect your PDF files</p>
-
-    <div id="warning" class="warning" style="display:none">
-      ⚠️ <strong>qpdf</strong> is not installed.
-      <a href="https://github.com/qpdf/qpdf" target="_blank">Install it</a> to use this app.
-    </div>
 
     <div class="drop-zone" id="dropZone">
       <p>📄 Click to select PDF files</p>
@@ -127,12 +113,6 @@
     const { invoke } = window.__TAURI__.core;
 
     let selectedFiles = [];
-
-    async function init() {
-      const ok = await invoke('check_qpdf');
-      if (!ok) document.getElementById('warning').style.display = 'block';
-    }
-    init();
 
     document.getElementById('dropZone').addEventListener('click', async () => {
       const { open } = window.__TAURI__.dialog;

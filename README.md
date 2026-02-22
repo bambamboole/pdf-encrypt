@@ -12,20 +12,12 @@ A simple desktop tool to password-protect PDF files. Built with [Tauri v2](https
 - Set a password
 - Encrypts with AES-256 and saves as `filename_encrypted.pdf`
 - Cross-platform (Windows, macOS, Linux)
+- No external dependencies — encryption is handled natively in Rust via [lopdf](https://github.com/J-F-Liu/lopdf)
 
 ## Prerequisites
 
 - [Rust](https://rustup.rs/) (stable)
 - [Node.js](https://nodejs.org/) (for Tauri CLI)
-- **[qpdf](https://github.com/qpdf/qpdf)** — must be installed and on your `PATH`
-
-### Install qpdf
-
-| OS | Command |
-|---|---|
-| macOS | `brew install qpdf` |
-| Ubuntu/Debian | `sudo apt install qpdf` |
-| Windows | `choco install qpdf` or download from [GitHub releases](https://github.com/qpdf/qpdf/releases) |
 
 ## Development
 
@@ -48,7 +40,7 @@ The installer/binary will be in `src-tauri/target/release/bundle/`.
 
 ## How It Works
 
-The app uses `qpdf` under the hood to apply AES-256 encryption to your PDF files. The Tauri frontend provides a clean drag-and-drop interface, while the Rust backend handles the encryption via `qpdf`.
+The app uses the [lopdf](https://github.com/J-F-Liu/lopdf) Rust library to apply AES-256 encryption to your PDF files. The Tauri frontend provides a clean file-selection interface, while the Rust backend handles the encryption entirely in-process — no external tools required.
 
 ## License
 

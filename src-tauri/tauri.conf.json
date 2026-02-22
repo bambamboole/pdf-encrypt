@@ -20,9 +20,6 @@
     },
     "withGlobalTauri": true
   },
-  "plugins": {
-    "dialog": {
-      "open": true
-    }
-  }
+  "plugins": {}
+  
 }
