@@ -4,6 +4,8 @@ A simple desktop tool to password-protect PDF files. Built with [Tauri v2](https
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+![PDF Encrypt Screenshot](screenshot.png)
+
 ## Features
 
 - Select one or more PDF files
