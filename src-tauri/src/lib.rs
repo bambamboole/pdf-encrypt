@@ -102,7 +102,8 @@ mod tests {
     #[test]
     fn test_output_path_relative() {
         let result = encrypted_output_path("test.pdf");
-        assert_eq!(result, PathBuf::from("./test_encrypted.pdf"));
+        // Parent of a bare filename is "" which joins as just the filename
+        assert_eq!(result, PathBuf::from("test_encrypted.pdf"));
     }
 
     #[test]
@@ -138,16 +139,18 @@ mod tests {
     #[ignore] // Requires qpdf installed
     fn test_encrypt_real_pdf() {
         use std::fs;
-        // Create a minimal valid PDF
+        // Create a test PDF using qpdf --empty
         let dir = std::env::temp_dir().join("pdf_encrypt_test");
         fs::create_dir_all(&dir).unwrap();
         let input = dir.join("test.pdf");
-        // Minimal valid PDF
-        fs::write(
-            &input,
-            b"%PDF-1.0\n1 0 obj<</Pages 2 0 R/Type/Catalog>>endobj\n2 0 obj<</Count 1/Kids[3 0 R]/Type/Pages>>endobj\n3 0 obj<</MediaBox[0 0 612 792]/Parent 2 0 R/Type/Page>>endobj\nxref\n0 4\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \ntrailer<</Root 1 0 R/Size 4>>\nstartxref\n190\n%%EOF",
-        )
-        .unwrap();
+
+        // Use qpdf to create a valid empty PDF
+        let create = Command::new("qpdf")
+            .arg("--empty")
+            .arg(input.to_string_lossy().as_ref())
+            .output();
+        assert!(create.is_ok(), "qpdf --empty failed");
+        assert!(input.exists(), "test.pdf was not created");
 
         let results = encrypt_pdfs(
             vec![input.to_string_lossy().into()],
