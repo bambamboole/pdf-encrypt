@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/crates/tauri-cli/schema.json",
+  "productName": "PDF Encrypt",
+  "version": "0.1.0",
+  "identifier": "com.bambamboole.pdf-encrypt",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "PDF Encrypt",
+        "width": 600,
+        "height": 500,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "withGlobalTauri": true
+  },
+  "plugins": {
+    "dialog": {
+      "open": true
+    }
+  }
+}
