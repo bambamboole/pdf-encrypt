@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf libgtk-3-dev
+
+      - name: Install qpdf (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y qpdf
+
+      - name: Install qpdf (macOS)
+        if: runner.os == 'macOS'
+        run: brew install qpdf
+
+      - name: Install qpdf (Windows)
+        if: runner.os == 'Windows'
+        run: choco install qpdf -y
+
+      - name: Cargo check
+        run: cargo check --manifest-path src-tauri/Cargo.toml
+
+      - name: Cargo test
+        run: cargo test --manifest-path src-tauri/Cargo.toml -- --include-ignored
